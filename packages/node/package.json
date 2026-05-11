@@ -1,0 +1,35 @@
+{
+  "name": "@fold/node",
+  "version": "0.1.0",
+  "description": "Fold — Node.js resources for the unified virtual filesystem",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rimraf dist",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fold/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0",
+    "rimraf": "^6.0.0"
+  },
+  "keywords": ["vfs", "virtual-filesystem", "ai-agents", "fold", "nodejs"],
+  "license": "MIT"
+}

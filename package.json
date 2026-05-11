@@ -1,0 +1,24 @@
+{
+  "name": "fold",
+  "private": true,
+  "description": "Fold — Unified Virtual Filesystem for AI Agents",
+  "scripts": {
+    "build": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "lint": "pnpm -r run lint",
+    "clean": "pnpm -r run clean"
+  },
+  "keywords": [
+    "virtual-filesystem",
+    "ai-agents",
+    "mcp",
+    "langchain",
+    "vfs"
+  ],
+  "author": "thebuildercompany",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@9.15.0"
+}
