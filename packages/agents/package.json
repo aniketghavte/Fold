@@ -1,0 +1,43 @@
+{
+  "name": "@fold/agents",
+  "version": "0.1.0",
+  "description": "Fold — Agent framework adapters for LangChain, LangGraph, and Vercel AI SDK",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf dist",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fold/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@langchain/core": ">=0.1.0",
+    "ai": ">=3.0.0",
+    "zod": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@langchain/core": { "optional": true },
+    "ai": { "optional": true },
+    "zod": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "rimraf": "^6.0.0",
+    "zod": "^3.23.0"
+  },
+  "keywords": ["langchain", "langgraph", "vercel-ai", "ai-agents", "fold"],
+  "license": "MIT"
+}
