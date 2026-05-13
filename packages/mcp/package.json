@@ -12,6 +12,9 @@
       "require": "./dist/index.cjs"
     }
   },
+  "bin": {
+    "fold-mcp": "./dist/cli.js"
+  },
   "files": ["dist"],
   "scripts": {
     "build": "tsup",
@@ -21,6 +24,12 @@
   "dependencies": {
     "@fold/core": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "peerDependencies": {
+    "@fold/node": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@fold/node": { "optional": true }
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
