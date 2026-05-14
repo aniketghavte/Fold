@@ -9,6 +9,7 @@ import type {
   WriteOptions,
   ResourceEvent,
   ReactiveResource,
+  SnapshotableResource,
 } from '@fold/core'
 
 /**
@@ -34,7 +35,7 @@ interface RAMNode {
  * await ws.execute('echo "hello" > /scratch/hello.txt')
  * ```
  */
-export class RAMResource implements Resource, ReactiveResource {
+export class RAMResource implements Resource, ReactiveResource, SnapshotableResource {
   private root: RAMNode = {
     type: 'directory',
     children: new Map(),
@@ -148,6 +149,77 @@ export class RAMResource implements Resource, ReactiveResource {
       if (path.startsWith(watchPath)) {
         handlers.forEach(h => h(event))
       }
+    }
+  }
+
+  // ================================================================
+  // Snapshot / Restore
+  // ================================================================
+
+  /** Serialize the entire in-memory tree to a JSON-friendly structure */
+  async serialize(): Promise<Record<string, unknown>> {
+    return {
+      _type: 'ram',
+      tree: this.serializeNode(this.root),
+    }
+  }
+
+  private serializeNode(node: RAMNode): Record<string, unknown> {
+    if (node.type === 'file') {
+      return {
+        type: 'file',
+        data: node.data?.toString('base64') ?? '',
+        modifiedAt: node.modifiedAt.toISOString(),
+        createdAt: node.createdAt.toISOString(),
+      }
+    }
+    const children: Record<string, unknown> = {}
+    for (const [name, child] of node.children!) {
+      children[name] = this.serializeNode(child)
+    }
+    return {
+      type: 'directory',
+      children,
+      modifiedAt: node.modifiedAt.toISOString(),
+      createdAt: node.createdAt.toISOString(),
+    }
+  }
+
+  /**
+   * Restore a RAMResource from serialized snapshot data.
+   *
+   * @example
+   * ```ts
+   * const data = JSON.parse(snapshotJSON)
+   * const ram = RAMResource.deserialize(data)
+   * ```
+   */
+  static deserialize(data: Record<string, unknown>): RAMResource {
+    const resource = new RAMResource()
+    const tree = data.tree as Record<string, unknown>
+    resource.root = RAMResource.deserializeNode(tree)
+    return resource
+  }
+
+  private static deserializeNode(obj: Record<string, unknown>): RAMNode {
+    if (obj.type === 'file') {
+      return {
+        type: 'file',
+        data: Buffer.from(obj.data as string, 'base64'),
+        modifiedAt: new Date(obj.modifiedAt as string),
+        createdAt: new Date(obj.createdAt as string),
+      }
+    }
+    const children = new Map<string, RAMNode>()
+    const childrenObj = obj.children as Record<string, Record<string, unknown>>
+    for (const [name, childData] of Object.entries(childrenObj)) {
+      children.set(name, RAMResource.deserializeNode(childData))
+    }
+    return {
+      type: 'directory',
+      children,
+      modifiedAt: new Date(obj.modifiedAt as string),
+      createdAt: new Date(obj.createdAt as string),
     }
   }
 }

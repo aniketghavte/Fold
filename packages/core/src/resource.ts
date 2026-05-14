@@ -100,6 +100,15 @@ export interface ContextualResource extends Resource {
   listWithContext(path: string): Promise<import('./context').ContextEntry[]>
 }
 
+/**
+ * Optional interface for resources that support snapshot/restore.
+ * Enables ws.snapshot() — the workspace persistence system.
+ */
+export interface SnapshotableResource extends Resource {
+  /** Serialize the resource's full state to a JSON-friendly object */
+  serialize(): Promise<Record<string, unknown>>
+}
+
 // ---- Type guard helpers ----
 
 /** Check if a resource supports reactive subscriptions */
@@ -110,4 +119,9 @@ export function isReactive(resource: Resource): resource is ReactiveResource {
 /** Check if a resource supports rich context listings */
 export function isContextual(resource: Resource): resource is ContextualResource {
   return typeof (resource as ContextualResource).listWithContext === 'function'
+}
+
+/** Check if a resource supports snapshot serialization */
+export function isSnapshotable(resource: Resource): resource is SnapshotableResource {
+  return typeof (resource as SnapshotableResource).serialize === 'function'
 }

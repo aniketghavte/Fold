@@ -8,6 +8,8 @@ import type { ContextEntry } from './context'
 import { Executor, type CommandHandler } from './executor'
 import { type CacheStore, RAMCacheStore } from './cache'
 import { ReactiveEngine } from './reactive'
+import { buildSnapshot, getDeserializer } from './snapshot'
+import type { SnapshotData } from './snapshot'
 
 /**
  * Configuration for creating a Workspace.
@@ -237,14 +239,64 @@ export class Workspace {
   }
 
   // ================================================================
-  // Snapshot / Restore (TODO — Phase 2)
+  // Snapshot / Restore
   // ================================================================
 
-  async snapshot(_outputPath: string): Promise<void> {
-    throw new Error('TODO: implement snapshot — Phase 2')
+  /**
+   * Serialize the workspace state to a JSON file.
+   * RAM resources are fully serialized; external resources store config only.
+   *
+   * @example
+   * ```ts
+   * await ws.snapshot('./workspace-backup.json')
+   * ```
+   */
+  async snapshot(outputPath: string): Promise<void> {
+    const data = await buildSnapshot(this.mounts)
+    const json = JSON.stringify(data, null, 2)
+    // Use dynamic import for fs to keep core runtime-agnostic at the type level
+    const { writeFile } = await import('fs/promises')
+    const { dirname } = await import('path')
+    const { mkdirSync, existsSync } = await import('fs')
+    const dir = dirname(outputPath)
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+    await writeFile(outputPath, json, 'utf-8')
   }
 
-  static async load(_snapshotPath: string): Promise<Workspace> {
-    throw new Error('TODO: implement load — Phase 2')
+  /**
+   * Load a workspace from a snapshot file.
+   * Only resources with registered deserializers will be restored.
+   * Non-snapshotable mounts (S3, Slack, etc.) are skipped — re-mount them manually.
+   *
+   * @example
+   * ```ts
+   * const ws = await Workspace.load('./workspace-backup.json')
+   * await ws.execute('cat /scratch/hello.txt')
+   * ```
+   */
+  static async load(snapshotPath: string, config: WorkspaceConfig = {}): Promise<Workspace> {
+    const { readFile } = await import('fs/promises')
+    const raw = await readFile(snapshotPath, 'utf-8')
+    const snapshot: SnapshotData = JSON.parse(raw)
+
+    if (snapshot.version !== 1) {
+      throw new Error(`Unsupported snapshot version: ${snapshot.version}`)
+    }
+
+    const mounts: Record<string, Resource> = {}
+
+    for (const mount of snapshot.mounts) {
+      if (!mount.snapshotted || !mount.data) continue
+
+      const deserializer = getDeserializer(mount.resourceType)
+      if (!deserializer) {
+        console.warn(`No deserializer registered for resource type: ${mount.resourceType} — skipping mount ${mount.prefix}`)
+        continue
+      }
+
+      mounts[mount.prefix] = deserializer(mount.data)
+    }
+
+    return new Workspace(mounts, config)
   }
 }

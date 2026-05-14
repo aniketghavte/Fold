@@ -3,8 +3,8 @@
 
 // ---- Resource interface & types ----
 export type { EntryType, Entry, FileStat, WriteOptions, ResourceEvent } from './resource'
-export type { Resource, ReactiveResource, ContextualResource } from './resource'
-export { isReactive, isContextual } from './resource'
+export type { Resource, ReactiveResource, ContextualResource, SnapshotableResource } from './resource'
+export { isReactive, isContextual, isSnapshotable } from './resource'
 
 // ---- Rich context ----
 export type { ContextEntry } from './context'
@@ -23,3 +23,7 @@ export type { WatchCallback, WatchOptions } from './reactive'
 
 // ---- Executor ----
 export type { CommandHandler } from './executor'
+
+// ---- Snapshot ----
+export type { MountSnapshot, SnapshotData, ResourceDeserializer } from './snapshot'
+export { buildSnapshot, serializeMount, registerDeserializer, getDeserializer } from './snapshot'
