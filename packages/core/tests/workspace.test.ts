@@ -75,6 +75,19 @@ describe('Workspace', () => {
     expect(r.stdout).toBe('content')
     expect(r.exitCode).toBe(0)
   })
+
+  test('list / returns virtual directories for top-level mounts', async () => {
+    const ws = new Workspace({
+      '/data': new TestResource(),
+      '/docs/tech': new TestResource(),
+      '/data/logs': new TestResource(),
+    })
+    const entries = await ws.list('/')
+    expect(entries).toHaveLength(2)
+    expect(entries.map(e => e.name).sort()).toEqual(['data', 'docs'])
+    expect(entries[0].type).toBe('directory')
+  })
+
   test('execute unknown command', async () => {
     const r = await ws.execute('nope')
     expect(r.exitCode).toBe(1)

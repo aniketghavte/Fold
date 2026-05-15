@@ -133,9 +133,28 @@ export class Workspace {
     const cached = await this.cache.get(cacheKey)
     if (cached) return JSON.parse(cached)
 
+    let entries: Entry[] = []
     const match = this.resolve(vfsPath)
-    if (!match) throw new Error(`No resource mounted at: ${vfsPath}`)
-    const entries = await match.resource.list(match.relativePath)
+    
+    if (match) {
+      entries = await match.resource.list(match.relativePath)
+    } else if (vfsPath === '/' || vfsPath === '') {
+      // Virtual root directory — list all top-level mounts
+      const seen = new Set<string>()
+      for (const prefix of this.mounts.keys()) {
+        const topLevel = prefix.split('/').filter(Boolean)[0]
+        if (topLevel && !seen.has(topLevel)) {
+          seen.add(topLevel)
+          entries.push({
+            name: topLevel,
+            path: `/${topLevel}`,
+            type: 'directory' as const,
+          })
+        }
+      }
+    } else {
+      throw new Error(`No resource mounted at: ${vfsPath}`)
+    }
 
     await this.cache.set(cacheKey, JSON.stringify(entries), this.indexTTL)
     return entries
@@ -147,12 +166,19 @@ export class Workspace {
    */
   async listWithContext(vfsPath: string): Promise<ContextEntry[]> {
     const match = this.resolve(vfsPath)
-    if (!match) throw new Error(`No resource mounted at: ${vfsPath}`)
-    if (isContextual(match.resource)) {
-      return match.resource.listWithContext(match.relativePath)
+    if (match) {
+      if (isContextual(match.resource)) {
+        return match.resource.listWithContext(match.relativePath)
+      }
+      return match.resource.list(match.relativePath)
+    } else if (vfsPath === '/' || vfsPath === '') {
+      const base = await this.list(vfsPath)
+      return base.map(e => ({
+        ...e,
+        meta: { summary: 'Mounted resource' }
+      }))
     }
-    // Fallback: return regular listing as ContextEntry
-    return match.resource.list(match.relativePath)
+    throw new Error(`No resource mounted at: ${vfsPath}`)
   }
 
   // ================================================================

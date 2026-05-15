@@ -3,7 +3,7 @@
 // Reading a path like /llama3/hello world runs an inference.
 // Unique to Fold — no other tool in this space does this.
 
-import type { Resource, Entry, FileStat } from '@fold/core'
+import type { Resource, Entry, FileStat, ContextualResource, ContextEntry } from '@fold/core'
 
 /**
  * Configuration for OllamaResource.
@@ -34,7 +34,7 @@ export interface OllamaConfig {
  * await ws.execute('cat /model/llama3/explain quantum computing')
  * ```
  */
-export class OllamaResource implements Resource {
+export class OllamaResource implements Resource, ContextualResource {
   private baseUrl: string
 
   constructor(config: OllamaConfig = {}) {
@@ -57,6 +57,27 @@ export class OllamaResource implements Resource {
       { name: 'README', path: `${vfsPath}/README`, type: 'file' },
       { name: 'info', path: `${vfsPath}/info`, type: 'file' },
     ]
+  }
+
+  async listWithContext(vfsPath: string): Promise<ContextEntry[]> {
+    if (vfsPath === '/' || vfsPath === '') {
+      const res = await fetch(`${this.baseUrl}/api/tags`)
+      const { models } = await res.json() as { models: any[] }
+      return models.map((m: any) => ({
+        name: m.name,
+        path: `/${m.name}`,
+        type: 'directory' as const,
+        size: m.size,
+        modifiedAt: new Date(m.modified_at),
+        meta: {
+          family: m.details?.family,
+          parameterSize: m.details?.parameter_size,
+          quantization: m.details?.quantization_level,
+          summary: `${m.details?.parameter_size || 'unknown'} params · ${m.details?.quantization_level || 'unknown'}`,
+        },
+      }))
+    }
+    return this.list(vfsPath)
   }
 
   async read(vfsPath: string): Promise<Buffer> {

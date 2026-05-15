@@ -59,6 +59,24 @@ describe('OllamaResource', () => {
     expect(mockFetch).toHaveBeenCalledTimes(1)
   })
 
+  test('listWithContext returns metadata', async () => {
+    mockFetch.mockResolvedValueOnce({ 
+      ok: true, 
+      json: async () => ({ 
+        models: [{ 
+          name: 'llama3', 
+          size: 4700000000, 
+          modified_at: '2023-11-01T12:00:00Z',
+          details: { parameter_size: '8B', quantization_level: 'Q4_0' }
+        }] 
+      }) 
+    })
+    const entries = await resource.listWithContext('/')
+    expect(entries).toHaveLength(1)
+    expect(entries[0].meta?.parameterSize).toBe('8B')
+    expect(entries[0].meta?.quantization).toBe('Q4_0')
+  })
+
   test('stat returns exists=true', async () => {
     const stat = await resource.stat('/llama3')
     expect(stat.exists).toBe(true)
