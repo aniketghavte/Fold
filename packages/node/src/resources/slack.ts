@@ -11,14 +11,22 @@ export interface SlackConfig {
 }
 
 export class SlackResource implements Resource, ReactiveResource, ContextualResource {
-  private client: import('@slack/web-api').WebClient
+  private client: import('@slack/web-api').WebClient | null = null
   private socketClient?: import('@slack/socket-mode').SocketModeClient
+  private token: string
   private appToken?: string
 
   constructor(config: SlackConfig) {
-    const { WebClient } = require('@slack/web-api') as typeof import('@slack/web-api')
-    this.client = new WebClient(config.token)
+    this.token = config.token
     this.appToken = config.appToken
+  }
+
+  private async getClient(): Promise<import('@slack/web-api').WebClient> {
+    if (!this.client) {
+      const { WebClient } = await import('@slack/web-api')
+      this.client = new WebClient(this.token)
+    }
+    return this.client
   }
 
   async list(vfsPath: string): Promise<Entry[]> {
@@ -30,7 +38,8 @@ export class SlackResource implements Resource, ReactiveResource, ContextualReso
       ]
     }
     if (parts[0] === 'channels' && parts.length === 1) {
-      const res = await this.client.conversations.list({ types: 'public_channel,private_channel' })
+      const client = await this.getClient()
+      const res = await client.conversations.list({ types: 'public_channel,private_channel' })
       return (res.channels ?? []).map(c => ({ name: c.name!, path: `/channels/${c.name}`, type: 'directory' as const }))
     }
     if (parts[0] === 'channels' && parts.length === 2) {
@@ -43,7 +52,8 @@ export class SlackResource implements Resource, ReactiveResource, ContextualReso
       return dates
     }
     if (parts[0] === 'users' && parts.length === 1) {
-      const res = await this.client.users.list({})
+      const client = await this.getClient()
+      const res = await client.users.list({})
       return (res.members ?? []).filter(u => !u.deleted && !u.is_bot).map(u => ({ name: u.id!, path: `/users/${u.id}`, type: 'file' as const }))
     }
     return []
@@ -52,7 +62,8 @@ export class SlackResource implements Resource, ReactiveResource, ContextualReso
   async listWithContext(vfsPath: string): Promise<ContextEntry[]> {
     const parts = vfsPath.split('/').filter(Boolean)
     if (parts[0] === 'channels' && parts.length === 1) {
-      const res = await this.client.conversations.list({ types: 'public_channel,private_channel' })
+      const client = await this.getClient()
+      const res = await client.conversations.list({ types: 'public_channel,private_channel' })
       return (res.channels ?? []).map(c => ({
         name: c.name!, path: `/channels/${c.name}`, type: 'directory' as const,
         meta: {
@@ -70,16 +81,18 @@ export class SlackResource implements Resource, ReactiveResource, ContextualReso
     if (parts[0] === 'channels' && parts.length === 3) {
       const channelName = parts[1]
       const date = parts[2].replace('.jsonl', '')
-      const channels = await this.client.conversations.list({ types: 'public_channel,private_channel' })
+      const client = await this.getClient()
+      const channels = await client.conversations.list({ types: 'public_channel,private_channel' })
       const channel = channels.channels?.find(c => c.name === channelName)
       if (!channel?.id) throw new Error(`Channel not found: ${channelName}`)
       const oldest = new Date(date).getTime() / 1000
-      const res = await this.client.conversations.history({ channel: channel.id, oldest: String(oldest), latest: String(oldest + 86400), limit: 1000 })
+      const res = await client.conversations.history({ channel: channel.id, oldest: String(oldest), latest: String(oldest + 86400), limit: 1000 })
       const lines = (res.messages ?? []).map(m => JSON.stringify({ ts: m.ts, user: m.user, text: m.text, thread_ts: m.thread_ts, reply_count: m.reply_count }))
       return Buffer.from(lines.join('\n'))
     }
     if (parts[0] === 'users' && parts.length === 2) {
-      const res = await this.client.users.info({ user: parts[1] })
+      const client = await this.getClient()
+      const res = await client.users.info({ user: parts[1] })
       return Buffer.from(JSON.stringify(res.user, null, 2))
     }
     throw new Error(`Cannot read: ${vfsPath}`)

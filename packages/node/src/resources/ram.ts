@@ -7,9 +7,11 @@ import type {
   Entry,
   FileStat,
   WriteOptions,
-  ResourceEvent,
   ReactiveResource,
   SnapshotableResource,
+  ContextualResource,
+  ContextEntry,
+  ResourceEvent,
 } from '@fold/core'
 
 /**
@@ -35,7 +37,7 @@ interface RAMNode {
  * await ws.execute('echo "hello" > /scratch/hello.txt')
  * ```
  */
-export class RAMResource implements Resource, ReactiveResource, SnapshotableResource {
+export class RAMResource implements Resource, ReactiveResource, SnapshotableResource, ContextualResource {
   private root: RAMNode = {
     type: 'directory',
     children: new Map(),
@@ -75,6 +77,31 @@ export class RAMResource implements Resource, ReactiveResource, SnapshotableReso
       size: child.data?.length,
       modifiedAt: child.modifiedAt,
     }))
+  }
+
+  async listWithContext(path: string): Promise<ContextEntry[]> {
+    const node = this.navigate(path)
+    if (!node || node.type !== 'directory') return []
+    return Array.from(node.children!.entries()).map(([name, child]) => {
+      const entry: ContextEntry = {
+        name,
+        path: `${path === '/' ? '' : path}/${name}`,
+        type: child.type,
+        size: child.data?.length,
+        modifiedAt: child.modifiedAt,
+      }
+
+      if (child.type === 'file') {
+        entry.meta = { summary: `${child.data?.length ?? 0} bytes` }
+      } else {
+        entry.meta = {
+          itemCount: child.children?.size ?? 0,
+          summary: `${child.children?.size ?? 0} items`,
+        }
+      }
+
+      return entry
+    })
   }
 
   async read(path: string): Promise<Buffer> {

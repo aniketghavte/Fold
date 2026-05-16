@@ -38,14 +38,15 @@ describe('Snapshot/Restore', () => {
     await ws.writeFile('/data/sub/nested.txt', Buffer.from('nested content'))
 
     // Snapshot
-    await ws.snapshot(snapshotPath)
+    const snapshotData = await ws.snapshot()
+    await fs.writeFile(snapshotPath, JSON.stringify(snapshotData))
 
     // Verify file was created
     const stat = await fs.stat(snapshotPath)
     expect(stat.size).toBeGreaterThan(0)
 
     // Load from snapshot
-    const ws2 = await Workspace.load(snapshotPath)
+    const ws2 = await Workspace.loadSnapshot(JSON.parse(await fs.readFile(snapshotPath, 'utf-8')))
 
     // Verify data was restored
     const result1 = await ws2.execute('cat /data/hello.txt')
@@ -64,8 +65,9 @@ describe('Snapshot/Restore', () => {
     await ws.writeFile('/scratch/b.txt', Buffer.from('B'))
     await ws.writeFile('/scratch/sub/c.txt', Buffer.from('C'))
 
-    await ws.snapshot(snapshotPath)
-    const ws2 = await Workspace.load(snapshotPath)
+    const snapshotData = await ws.snapshot()
+    await fs.writeFile(snapshotPath, JSON.stringify(snapshotData))
+    const ws2 = await Workspace.loadSnapshot(JSON.parse(await fs.readFile(snapshotPath, 'utf-8')))
 
     const ls = await ws2.execute('ls /scratch')
     expect(ls.stdout).toContain('a.txt')
@@ -81,8 +83,9 @@ describe('Snapshot/Restore', () => {
     const binaryData = Buffer.from([0x00, 0xFF, 0x80, 0x42, 0xDE, 0xAD])
     await ws.writeFile('/bin/data.bin', binaryData)
 
-    await ws.snapshot(snapshotPath)
-    const ws2 = await Workspace.load(snapshotPath)
+    const snapshotData = await ws.snapshot()
+    await fs.writeFile(snapshotPath, JSON.stringify(snapshotData))
+    const ws2 = await Workspace.loadSnapshot(JSON.parse(await fs.readFile(snapshotPath, 'utf-8')))
 
     const restored = await ws2.readFile('/bin/data.bin')
     expect(Buffer.compare(restored, binaryData)).toBe(0)
@@ -99,8 +102,9 @@ describe('Snapshot/Restore', () => {
     await ws.writeFile('/a/file1.txt', Buffer.from('from A'))
     await ws.writeFile('/b/file2.txt', Buffer.from('from B'))
 
-    await ws.snapshot(snapshotPath)
-    const ws2 = await Workspace.load(snapshotPath)
+    const snapshotData = await ws.snapshot()
+    await fs.writeFile(snapshotPath, JSON.stringify(snapshotData))
+    const ws2 = await Workspace.loadSnapshot(JSON.parse(await fs.readFile(snapshotPath, 'utf-8')))
 
     expect((await ws2.execute('cat /a/file1.txt')).stdout).toBe('from A')
     expect((await ws2.execute('cat /b/file2.txt')).stdout).toBe('from B')
@@ -113,7 +117,8 @@ describe('Snapshot/Restore', () => {
     const ws = new Workspace({ '/data': new RAMResource() })
     await ws.writeFile('/data/test.txt', Buffer.from('test'))
 
-    await ws.snapshot(snapshotPath)
+    const snapshotData = await ws.snapshot()
+    await fs.writeFile(snapshotPath, JSON.stringify(snapshotData))
 
     const raw = JSON.parse(await fs.readFile(snapshotPath, 'utf-8'))
     expect(raw.version).toBe(1)
@@ -130,10 +135,12 @@ describe('Snapshot/Restore', () => {
     const snapshotPath = path.join(dir, 'bad.json')
     await fs.writeFile(snapshotPath, JSON.stringify({ version: 99, mounts: [] }))
 
-    await expect(Workspace.load(snapshotPath)).rejects.toThrow('Unsupported snapshot version')
+    const data = JSON.parse(await fs.readFile(snapshotPath, 'utf-8'))
+    await expect(Workspace.loadSnapshot(data)).rejects.toThrow('Unsupported snapshot version')
   })
 
-  test('load with non-existent file throws', async () => {
-    await expect(Workspace.load('/non/existent/path.json')).rejects.toThrow()
+  test('load rejects invalid object', async () => {
+    // @ts-expect-error testing invalid input
+    await expect(Workspace.loadSnapshot({})).rejects.toThrow()
   })
 })

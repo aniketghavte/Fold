@@ -3,7 +3,7 @@
 // Also works with S3-compatible services (R2, MinIO, etc.)
 // Requires: npm install @aws-sdk/client-s3
 
-import type { Resource, Entry, FileStat } from '@fold/core'
+import type { Resource, Entry, FileStat, ContextualResource } from '@fold/core'
 
 // Lazy-load AWS SDK to keep it as optional peer dep
 let S3ClientModule: typeof import('@aws-sdk/client-s3') | null = null
@@ -41,7 +41,7 @@ export interface S3Config {
  * await ws.execute('cp /s3/report.csv /notes/may-report.csv')
  * ```
  */
-export class S3Resource implements Resource {
+export class S3Resource implements Resource, ContextualResource {
   private client: import('@aws-sdk/client-s3').S3Client | null = null
   private bucket: string
   private prefix: string
@@ -96,6 +96,29 @@ export class S3Resource implements Resource {
       type: 'directory' as const,
     }))
     return [...dirs, ...files]
+  }
+
+  async listWithContext(vfsPath: string): Promise<import('@fold/core').ContextEntry[]> {
+    const entries = await this.list(vfsPath)
+    
+    return entries.map(entry => {
+      const meta: Record<string, unknown> = {}
+      
+      if (entry.type === 'file') {
+        const ext = entry.name.split('.').pop()
+        if (ext) meta.extension = ext
+        if (entry.size !== undefined) {
+          meta.summary = `${(entry.size / 1024).toFixed(1)} KB`
+        }
+      } else {
+        meta.summary = 'Prefix/Directory'
+      }
+
+      return {
+        ...entry,
+        meta
+      }
+    })
   }
 
   async read(vfsPath: string): Promise<Buffer> {

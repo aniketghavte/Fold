@@ -2,6 +2,11 @@
 // Barrel exports for @fold/node
 // Re-exports everything from @fold/core plus Node-specific resources.
 
+import fs from 'fs/promises'
+import path from 'path'
+import { Workspace, registerDeserializer, type SnapshotData } from '@fold/core'
+import { RAMResource } from './resources/ram'
+
 // ---- Re-export all of core ----
 export * from '@fold/core'
 
@@ -24,3 +29,27 @@ export type { RedisConfig } from './resources/redis'
 
 // ---- Cache ----
 export { RedisCacheStore } from './cache/redis-cache'
+
+// ---- Initialization ----
+// Register built-in deserializers
+registerDeserializer('ram', (data) => RAMResource.deserialize(data))
+
+// ---- Node.js Snapshot Helpers ----
+/**
+ * Save a workspace snapshot to disk.
+ */
+export async function saveWorkspace(ws: Workspace, outputPath: string): Promise<void> {
+  const data = await ws.snapshot()
+  const json = JSON.stringify(data, null, 2)
+  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await fs.writeFile(outputPath, json, 'utf-8')
+}
+
+/**
+ * Load a workspace snapshot from disk.
+ */
+export async function loadWorkspace(snapshotPath: string, config?: any): Promise<Workspace> {
+  const raw = await fs.readFile(snapshotPath, 'utf-8')
+  const data: SnapshotData = JSON.parse(raw)
+  return Workspace.loadSnapshot(data, config)
+}

@@ -269,42 +269,30 @@ export class Workspace {
   // ================================================================
 
   /**
-   * Serialize the workspace state to a JSON file.
+   * Serialize the workspace state to a JSON-friendly object.
    * RAM resources are fully serialized; external resources store config only.
    *
    * @example
    * ```ts
-   * await ws.snapshot('./workspace-backup.json')
+   * const data = await ws.snapshot()
    * ```
    */
-  async snapshot(outputPath: string): Promise<void> {
-    const data = await buildSnapshot(this.mounts)
-    const json = JSON.stringify(data, null, 2)
-    // Use dynamic import for fs to keep core runtime-agnostic at the type level
-    const { writeFile } = await import('fs/promises')
-    const { dirname } = await import('path')
-    const { mkdirSync, existsSync } = await import('fs')
-    const dir = dirname(outputPath)
-    if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
-    await writeFile(outputPath, json, 'utf-8')
+  async snapshot(): Promise<SnapshotData> {
+    return buildSnapshot(this.mounts)
   }
 
   /**
-   * Load a workspace from a snapshot file.
+   * Load a workspace from a snapshot object.
    * Only resources with registered deserializers will be restored.
    * Non-snapshotable mounts (S3, Slack, etc.) are skipped — re-mount them manually.
    *
    * @example
    * ```ts
-   * const ws = await Workspace.load('./workspace-backup.json')
+   * const ws = await Workspace.loadSnapshot(snapshotData)
    * await ws.execute('cat /scratch/hello.txt')
    * ```
    */
-  static async load(snapshotPath: string, config: WorkspaceConfig = {}): Promise<Workspace> {
-    const { readFile } = await import('fs/promises')
-    const raw = await readFile(snapshotPath, 'utf-8')
-    const snapshot: SnapshotData = JSON.parse(raw)
-
+  static async loadSnapshot(snapshot: SnapshotData, config: WorkspaceConfig = {}): Promise<Workspace> {
     if (snapshot.version !== 1) {
       throw new Error(`Unsupported snapshot version: ${snapshot.version}`)
     }
