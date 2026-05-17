@@ -48,4 +48,4 @@ const result = await generateText({
 
 ## License
 
-MIT
+Apache-2.0

@@ -15,7 +15,9 @@
   "bin": {
     "fold-mcp": "./dist/cli.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",
@@ -29,7 +31,9 @@
     "@fold/node": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@fold/node": { "optional": true }
+    "@fold/node": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@fold/node": "workspace:*",
@@ -38,6 +42,19 @@
     "typescript": "^5.5.0",
     "rimraf": "^6.0.0"
   },
-  "keywords": ["mcp", "model-context-protocol", "ai-agents", "fold", "claude", "cursor"],
-  "license": "MIT"
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai-agents",
+    "fold",
+    "claude",
+    "cursor"
+  ],
+  "author": "Aniket Ghavte",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aniketghavte/Fold.git",
+    "directory": "packages/mcp"
+  },
+  "license": "Apache-2.0"
 }

@@ -271,4 +271,4 @@ await ws.execute('summarize /notes/report.md')
 
 ## License
 
-MIT
+Apache-2.0

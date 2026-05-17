@@ -53,4 +53,4 @@ import { Workspace, RAMResource, type Resource, type Entry } from '@fold/node'
 
 ## License
 
-MIT
+Apache-2.0

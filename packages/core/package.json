@@ -12,7 +12,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
@@ -27,6 +29,17 @@
     "vitest": "^2.0.0",
     "rimraf": "^6.0.0"
   },
-  "keywords": ["vfs", "virtual-filesystem", "ai-agents", "fold"],
-  "license": "MIT"
+  "keywords": [
+    "vfs",
+    "virtual-filesystem",
+    "ai-agents",
+    "fold"
+  ],
+  "author": "Aniket Ghavte",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aniketghavte/Fold.git",
+    "directory": "packages/core"
+  },
+  "license": "Apache-2.0"
 }

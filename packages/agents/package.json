@@ -12,7 +12,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",
@@ -27,9 +29,15 @@
     "zod": ">=3.0.0"
   },
   "peerDependenciesMeta": {
-    "@langchain/core": { "optional": true },
-    "ai": { "optional": true },
-    "zod": { "optional": true }
+    "@langchain/core": {
+      "optional": true
+    },
+    "ai": {
+      "optional": true
+    },
+    "zod": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
@@ -38,6 +46,18 @@
     "rimraf": "^6.0.0",
     "zod": "^3.23.0"
   },
-  "keywords": ["langchain", "langgraph", "vercel-ai", "ai-agents", "fold"],
-  "license": "MIT"
+  "keywords": [
+    "langchain",
+    "langgraph",
+    "vercel-ai",
+    "ai-agents",
+    "fold"
+  ],
+  "author": "Aniket Ghavte",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aniketghavte/Fold.git",
+    "directory": "packages/agents"
+  },
+  "license": "Apache-2.0"
 }

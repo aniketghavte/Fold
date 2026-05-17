@@ -60,4 +60,4 @@ await startMCPServer(workspace)
 
 ## License
 
-MIT
+Apache-2.0

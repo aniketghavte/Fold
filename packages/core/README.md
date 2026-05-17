@@ -46,4 +46,4 @@ See the [root README](../../README.md) for full API reference.
 
 ## License
 
-MIT
+Apache-2.0

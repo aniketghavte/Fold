@@ -15,8 +15,12 @@
     "langchain",
     "vfs"
   ],
-  "author": "thebuildercompany",
-  "license": "MIT",
+  "author": "Aniket Ghavte",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aniketghavte/Fold.git"
+  },
+  "license": "Apache-2.0",
   "engines": {
     "node": ">=18.0.0"
   },

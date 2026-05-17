@@ -12,7 +12,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
@@ -31,11 +33,21 @@
     "ioredis": ">=5.0.0"
   },
   "peerDependenciesMeta": {
-    "better-sqlite3": { "optional": true },
-    "@aws-sdk/client-s3": { "optional": true },
-    "@slack/web-api": { "optional": true },
-    "@slack/socket-mode": { "optional": true },
-    "ioredis": { "optional": true }
+    "better-sqlite3": {
+      "optional": true
+    },
+    "@aws-sdk/client-s3": {
+      "optional": true
+    },
+    "@slack/web-api": {
+      "optional": true
+    },
+    "@slack/socket-mode": {
+      "optional": true
+    },
+    "ioredis": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.0",
@@ -45,6 +57,18 @@
     "vitest": "^2.0.0",
     "rimraf": "^6.0.0"
   },
-  "keywords": ["vfs", "virtual-filesystem", "ai-agents", "fold", "nodejs"],
-  "license": "MIT"
+  "keywords": [
+    "vfs",
+    "virtual-filesystem",
+    "ai-agents",
+    "fold",
+    "nodejs"
+  ],
+  "author": "Aniket Ghavte",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aniketghavte/Fold.git",
+    "directory": "packages/node"
+  },
+  "license": "Apache-2.0"
 }
