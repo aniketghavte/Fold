@@ -12,6 +12,9 @@
       "require": "./dist/index.cjs"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "fold-mcp": "./dist/cli.js"
   },
