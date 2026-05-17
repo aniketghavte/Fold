@@ -2,8 +2,8 @@
 // GitHubResource — repos as directories, files readable via GitHub API.
 // Requires: No external deps (uses native fetch)
 
-import type { Resource, Entry, FileStat, ContextualResource } from '@fold/core'
-import type { ContextEntry } from '@fold/core'
+import type { Resource, Entry, FileStat, ContextualResource } from '@tbc-fold/core'
+import type { ContextEntry } from '@tbc-fold/core'
 
 export interface GitHubConfig {
   token?: string

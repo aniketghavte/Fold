@@ -1,5 +1,5 @@
 // packages/core/src/index.ts
-// Barrel exports for @fold/core
+// Barrel exports for @tbc-fold/core
 
 // ---- Resource interface & types ----
 export type { EntryType, Entry, FileStat, WriteOptions, ResourceEvent } from './resource'

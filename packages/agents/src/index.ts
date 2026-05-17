@@ -1,5 +1,5 @@
 // packages/agents/src/index.ts
-// Barrel exports for @fold/agents
+// Barrel exports for @tbc-fold/agents
 
 export { foldTools } from './langchain'
 export { foldLangGraphTools } from './langgraph'

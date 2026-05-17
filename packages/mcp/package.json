@@ -1,5 +1,5 @@
 {
-  "name": "@fold/mcp",
+  "name": "@tbc-fold/mcp",
   "version": "0.1.0",
   "description": "Fold — MCP server that exposes any Workspace to Claude, Cursor, and other MCP clients",
   "main": "dist/index.cjs",
@@ -27,19 +27,19 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@fold/core": "workspace:*",
+    "@tbc-fold/core": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.0.0"
   },
   "peerDependencies": {
-    "@fold/node": "workspace:*"
+    "@tbc-fold/node": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@fold/node": {
+    "@tbc-fold/node": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@fold/node": "workspace:*",
+    "@tbc-fold/node": "workspace:*",
     "@types/node": "^22.0.0",
     "tsup": "^8.0.0",
     "typescript": "^5.5.0",

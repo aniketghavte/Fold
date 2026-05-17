@@ -1,11 +1,11 @@
-# @fold/mcp
+# @tbc-fold/mcp
 
 Expose any Fold workspace as an MCP server. Any MCP client — Claude, Cursor, Windsurf, or custom — can use your virtual filesystem with zero additional code.
 
 ## Installation
 
 ```bash
-npm install @fold/mcp @fold/node
+npm install @tbc-fold/mcp @tbc-fold/node
 ```
 
 ## Usage
@@ -13,8 +13,8 @@ npm install @fold/mcp @fold/node
 ### As a Library
 
 ```typescript
-import { Workspace, LocalFSResource, SQLiteResource } from '@fold/node'
-import { startMCPServer } from '@fold/mcp'
+import { Workspace, LocalFSResource, SQLiteResource } from '@tbc-fold/node'
+import { startMCPServer } from '@tbc-fold/mcp'
 
 const ws = new Workspace({
   '/notes': new LocalFSResource({ path: '~/Documents' }),
@@ -49,7 +49,7 @@ Add to your Claude Desktop or Cursor config:
 ## API
 
 ```typescript
-import { createMCPServer, startMCPServer } from '@fold/mcp'
+import { createMCPServer, startMCPServer } from '@tbc-fold/mcp'
 
 // Create server (for custom transport)
 const server = createMCPServer(workspace)

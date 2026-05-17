@@ -3,7 +3,7 @@
 
 import { describe, test, expect, beforeEach } from 'vitest'
 import { RAMResource } from '../src/resources/ram'
-import type { ResourceEvent } from '@fold/core'
+import type { ResourceEvent } from '@tbc-fold/core'
 
 describe('RAMResource', () => {
   let ram: RAMResource

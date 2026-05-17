@@ -3,7 +3,7 @@
 //
 // Run: npx tsx examples/local-agent/index.ts
 
-import { Workspace, RAMResource, LocalFSResource } from '@fold/node'
+import { Workspace, RAMResource, LocalFSResource } from '@tbc-fold/node'
 
 async function main() {
   const ws = new Workspace({

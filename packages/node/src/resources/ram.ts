@@ -12,7 +12,7 @@ import type {
   ContextualResource,
   ContextEntry,
   ResourceEvent,
-} from '@fold/core'
+} from '@tbc-fold/core'
 
 /**
  * A node in the in-memory filesystem tree.

@@ -8,8 +8,8 @@ import type {
   Entry,
   FileStat,
   ContextualResource,
-} from '@fold/core'
-import type { ContextEntry } from '@fold/core'
+} from '@tbc-fold/core'
+import type { ContextEntry } from '@tbc-fold/core'
 import type Database from 'better-sqlite3'
 
 /**

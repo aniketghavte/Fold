@@ -1,14 +1,14 @@
 // packages/agents/src/vercel-ai.ts
 // Vercel AI SDK adapter — wraps Fold Workspace as a Vercel AI tool
 
-import type { Workspace } from '@fold/core'
+import type { Workspace } from '@tbc-fold/core'
 
 /**
  * Create Vercel AI SDK tools from a Fold Workspace.
  *
  * @example
  * ```ts
- * import { foldTool } from '@fold/agents'
+ * import { foldTool } from '@tbc-fold/agents'
  * const tools = foldTool(workspace)
  * const result = await generateText({ model, tools, prompt })
  * ```

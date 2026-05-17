@@ -1,7 +1,7 @@
 // packages/agents/src/langchain.ts
 // LangChain adapter — wraps Fold Workspace as a tool
 
-import type { Workspace } from '@fold/core'
+import type { Workspace } from '@tbc-fold/core'
 
 /**
  * Create LangChain-compatible tools from a Fold Workspace.
@@ -9,7 +9,7 @@ import type { Workspace } from '@fold/core'
  *
  * @example
  * ```ts
- * import { foldTools } from '@fold/agents'
+ * import { foldTools } from '@tbc-fold/agents'
  * const tools = foldTools(workspace)
  * ```
  */

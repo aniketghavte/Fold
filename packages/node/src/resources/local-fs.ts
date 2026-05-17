@@ -13,8 +13,8 @@ import type {
   ResourceEvent,
   ReactiveResource,
   ContextualResource,
-} from '@fold/core'
-import type { ContextEntry } from '@fold/core'
+} from '@tbc-fold/core'
+import type { ContextEntry } from '@tbc-fold/core'
 
 /**
  * Configuration for LocalFSResource.

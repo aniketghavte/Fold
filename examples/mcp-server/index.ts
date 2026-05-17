@@ -4,8 +4,8 @@
 // Run: npx tsx examples/mcp-server/index.ts
 // Then configure your MCP client to connect to this server.
 
-import { Workspace, RAMResource, LocalFSResource } from '@fold/node'
-import { startMCPServer } from '@fold/mcp'
+import { Workspace, RAMResource, LocalFSResource } from '@tbc-fold/node'
+import { startMCPServer } from '@tbc-fold/mcp'
 
 async function main() {
   const ws = new Workspace({

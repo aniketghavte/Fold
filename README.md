@@ -15,7 +15,7 @@
 **Fold** gives AI agents a single, bash-like interface to interact with *any* data source — local files, databases, cloud storage, APIs, and even local LLMs — all through familiar filesystem semantics.
 
 ```typescript
-import { Workspace, LocalFSResource, SQLiteResource, OllamaResource } from '@fold/node'
+import { Workspace, LocalFSResource, SQLiteResource, OllamaResource } from '@tbc-fold/node'
 
 const ws = new Workspace({
   '/notes':  new LocalFSResource({ path: '~/Documents' }),
@@ -45,7 +45,7 @@ await ws.execute('cp /db/users/42 /notes/user-backup.json')   // cross-resource 
 
 ```bash
 # Install the Node.js package (includes all resources)
-npm install @fold/node
+npm install @tbc-fold/node
 
 # Optional: install resource-specific deps as needed
 npm install better-sqlite3        # for SQLiteResource
@@ -56,7 +56,7 @@ npm install ioredis               # for RedisResource
 ### Hello World
 
 ```typescript
-import { Workspace, RAMResource } from '@fold/node'
+import { Workspace, RAMResource } from '@tbc-fold/node'
 
 const ws = new Workspace({
   '/scratch': new RAMResource(),
@@ -70,7 +70,7 @@ console.log(result.stdout) // → "Hello from Fold!"
 ### Local Filesystem
 
 ```typescript
-import { Workspace, LocalFSResource } from '@fold/node'
+import { Workspace, LocalFSResource } from '@tbc-fold/node'
 
 const ws = new Workspace({
   '/docs': new LocalFSResource({ path: '~/Documents' }),
@@ -88,7 +88,7 @@ await ws.execute('cp /code/notes.md /docs/backup-notes.md')
 ### SQLite as a Filesystem
 
 ```typescript
-import { Workspace, SQLiteResource } from '@fold/node'
+import { Workspace, SQLiteResource } from '@tbc-fold/node'
 
 const ws = new Workspace({
   '/db': new SQLiteResource({ path: './app.db' }),
@@ -102,7 +102,7 @@ await ws.execute('ls /db/orders')          // list all order PKs
 ### Reactive Monitoring
 
 ```typescript
-import { Workspace, LocalFSResource } from '@fold/node'
+import { Workspace, LocalFSResource } from '@tbc-fold/node'
 
 const ws = new Workspace({
   '/logs': new LocalFSResource({ path: '/var/log' }),
@@ -138,14 +138,14 @@ ws.watch('/logs', (event) => {
 
 | Resource | Package | Description | Deps |
 |----------|---------|-------------|------|
-| `RAMResource` | `@fold/node` | In-memory filesystem | None |
-| `LocalFSResource` | `@fold/node` | Local filesystem with path protection | None |
-| `SQLiteResource` | `@fold/node` | Tables as dirs, rows as JSON files | `better-sqlite3` |
-| `OllamaResource` | `@fold/node` | Local LLM inference as file reads | None (uses fetch) |
-| `S3Resource` | `@fold/node` | S3/R2/MinIO objects | `@aws-sdk/client-s3` |
-| `SlackResource` | `@fold/node` | Channels as dirs, messages as JSONL | `@slack/web-api` |
-| `GitHubResource` | `@fold/node` | Repos and files via GitHub API | None (uses fetch) |
-| `RedisResource` | `@fold/node` | Redis keys as files | `ioredis` |
+| `RAMResource` | `@tbc-fold/node` | In-memory filesystem | None |
+| `LocalFSResource` | `@tbc-fold/node` | Local filesystem with path protection | None |
+| `SQLiteResource` | `@tbc-fold/node` | Tables as dirs, rows as JSON files | `better-sqlite3` |
+| `OllamaResource` | `@tbc-fold/node` | Local LLM inference as file reads | None (uses fetch) |
+| `S3Resource` | `@tbc-fold/node` | S3/R2/MinIO objects | `@aws-sdk/client-s3` |
+| `SlackResource` | `@tbc-fold/node` | Channels as dirs, messages as JSONL | `@slack/web-api` |
+| `GitHubResource` | `@tbc-fold/node` | Repos and files via GitHub API | None (uses fetch) |
+| `RedisResource` | `@tbc-fold/node` | Redis keys as files | `ioredis` |
 
 ## Built-in Commands
 
@@ -172,13 +172,13 @@ Supports **pipes** (`|`), **output redirects** (`>`, `>>`), and **quoted strings
 Expose any Fold workspace to Claude, Cursor, or any MCP client:
 
 ```bash
-npm install @fold/mcp
+npm install @tbc-fold/mcp
 ```
 
 ```typescript
 // mcp-server.ts
-import { Workspace, LocalFSResource, SQLiteResource } from '@fold/node'
-import { startMCPServer } from '@fold/mcp'
+import { Workspace, LocalFSResource, SQLiteResource } from '@tbc-fold/node'
+import { startMCPServer } from '@tbc-fold/mcp'
 
 const ws = new Workspace({
   '/notes': new LocalFSResource({ path: '~/Documents' }),
@@ -203,13 +203,13 @@ Add to your Claude/Cursor MCP config:
 ## Agent Adapters
 
 ```bash
-npm install @fold/agents
+npm install @tbc-fold/agents
 ```
 
 ### LangChain / LangGraph
 
 ```typescript
-import { foldTools, foldLangGraphTools } from '@fold/agents'
+import { foldTools, foldLangGraphTools } from '@tbc-fold/agents'
 
 // LangChain
 const tools = foldTools(workspace)
@@ -221,7 +221,7 @@ const lgTools = foldLangGraphTools(workspace)
 ### Vercel AI SDK
 
 ```typescript
-import { foldTool } from '@fold/agents'
+import { foldTool } from '@tbc-fold/agents'
 import { generateText } from 'ai'
 
 const tools = foldTool(workspace)
@@ -232,17 +232,17 @@ const result = await generateText({ model, tools, prompt })
 
 | Package | Description |
 |---------|-------------|
-| [`@fold/core`](./packages/core) | Runtime-agnostic interfaces, workspace, executor, cache, reactive engine |
-| [`@fold/node`](./packages/node) | Node.js resources (RAM, LocalFS, SQLite, S3, Slack, Ollama, GitHub, Redis) |
-| [`@fold/mcp`](./packages/mcp) | MCP server — expose workspace to Claude/Cursor |
-| [`@fold/agents`](./packages/agents) | LangChain, LangGraph, Vercel AI SDK adapters |
+| [`@tbc-fold/core`](./packages/core) | Runtime-agnostic interfaces, workspace, executor, cache, reactive engine |
+| [`@tbc-fold/node`](./packages/node) | Node.js resources (RAM, LocalFS, SQLite, S3, Slack, Ollama, GitHub, Redis) |
+| [`@tbc-fold/mcp`](./packages/mcp) | MCP server — expose workspace to Claude/Cursor |
+| [`@tbc-fold/agents`](./packages/agents) | LangChain, LangGraph, Vercel AI SDK adapters |
 
 ## Custom Resources
 
 Build your own resource by implementing 5 methods:
 
 ```typescript
-import { Resource, Entry, FileStat } from '@fold/core'
+import { Resource, Entry, FileStat } from '@tbc-fold/core'
 
 class MyResource implements Resource {
   async list(path: string): Promise<Entry[]> { /* ... */ }

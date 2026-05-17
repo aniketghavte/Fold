@@ -3,7 +3,7 @@
 // Also works with S3-compatible services (R2, MinIO, etc.)
 // Requires: npm install @aws-sdk/client-s3
 
-import type { Resource, Entry, FileStat, ContextualResource } from '@fold/core'
+import type { Resource, Entry, FileStat, ContextualResource } from '@tbc-fold/core'
 
 // Lazy-load AWS SDK to keep it as optional peer dep
 let S3ClientModule: typeof import('@aws-sdk/client-s3') | null = null
@@ -98,7 +98,7 @@ export class S3Resource implements Resource, ContextualResource {
     return [...dirs, ...files]
   }
 
-  async listWithContext(vfsPath: string): Promise<import('@fold/core').ContextEntry[]> {
+  async listWithContext(vfsPath: string): Promise<import('@tbc-fold/core').ContextEntry[]> {
     const entries = await this.list(vfsPath)
     
     return entries.map(entry => {

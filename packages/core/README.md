@@ -1,13 +1,13 @@
-# @fold/core
+# @tbc-fold/core
 
 Runtime-agnostic core for the Fold virtual filesystem. Contains all interfaces, the Workspace class, bash executor, cache layer, and reactive engine.
 
-**This package has zero runtime dependencies.** It provides the foundation that `@fold/node` builds on with Node.js-specific resources.
+**This package has zero runtime dependencies.** It provides the foundation that `@tbc-fold/node` builds on with Node.js-specific resources.
 
 ## Installation
 
 ```bash
-npm install @fold/core
+npm install @tbc-fold/core
 ```
 
 ## What's Inside
@@ -25,7 +25,7 @@ npm install @fold/core
 ## Usage
 
 ```typescript
-import { Workspace, type Resource } from '@fold/core'
+import { Workspace, type Resource } from '@tbc-fold/core'
 
 // Implement the Resource interface
 class MyResource implements Resource {

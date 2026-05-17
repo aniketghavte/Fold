@@ -8,5 +8,5 @@ export default defineConfig({
   sourcemap: true,
   splitting: false,
   treeshake: true,
-  external: ['@fold/core', '@modelcontextprotocol/sdk'],
+  external: ['@tbc-fold/core', '@modelcontextprotocol/sdk'],
 })

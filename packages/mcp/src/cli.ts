@@ -3,7 +3,7 @@
 // CLI entry point for fold-mcp server
 // Usage: fold-mcp [--dir <path>] [--readonly]
 
-import { Workspace } from '@fold/core'
+import { Workspace } from '@tbc-fold/core'
 
 async function main() {
   const args = process.argv.slice(2)
@@ -29,7 +29,7 @@ async function main() {
   }
 
   // Lazy import to avoid loading everything at parse time
-  const { LocalFSResource, RAMResource } = await import('@fold/node')
+  const { LocalFSResource, RAMResource } = await import('@tbc-fold/node')
   const { startMCPServer } = await import('./server')
 
   const ws = new Workspace({

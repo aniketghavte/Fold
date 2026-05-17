@@ -9,7 +9,7 @@
 // This example shows how to use SlackResource with reactive
 // subscriptions to auto-trigger on new messages.
 
-import { Workspace, RAMResource, SlackResource } from '@fold/node'
+import { Workspace, RAMResource, SlackResource } from '@tbc-fold/node'
 
 async function main() {
   const token = process.env.SLACK_TOKEN

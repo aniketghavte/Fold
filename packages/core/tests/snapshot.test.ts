@@ -7,7 +7,7 @@ import fs from 'fs/promises'
 import path from 'path'
 import os from 'os'
 
-// We need RAMResource from @fold/node for these tests
+// We need RAMResource from @tbc-fold/node for these tests
 // Import directly from the sibling package source
 import { RAMResource } from '../../node/src/resources/ram'
 

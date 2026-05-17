@@ -2,7 +2,7 @@
 // RedisResource — Redis keys as files, key prefixes as directories.
 // Requires: npm install ioredis
 
-import type { Resource, Entry, FileStat, WriteOptions, ContextualResource } from '@fold/core'
+import type { Resource, Entry, FileStat, WriteOptions, ContextualResource } from '@tbc-fold/core'
 
 export interface RedisConfig {
   url?: string
@@ -49,7 +49,7 @@ export class RedisResource implements Resource, ContextualResource {
     return entries
   }
 
-  async listWithContext(vfsPath: string): Promise<import('@fold/core').ContextEntry[]> {
+  async listWithContext(vfsPath: string): Promise<import('@tbc-fold/core').ContextEntry[]> {
     const entries = await this.list(vfsPath)
     if (entries.length === 0) return []
 

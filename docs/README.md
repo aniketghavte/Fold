@@ -6,12 +6,12 @@ Fold is a runtime-agnostic virtual filesystem designed specifically for AI agent
 
 The system is built on a layered architecture:
 
-1. **Resources (`@fold/core`)**: The foundational interface. Every backend implements `list`, `read`, `write`, `stat`, and `delete`.
-2. **Workspace (`@fold/core`)**: The central orchestrator. It mounts resources at path prefixes (e.g., `/data`, `/slack`) and handles path resolution using longest-prefix matching.
-3. **Executor (`@fold/core`)**: A bash-like command parser and execution engine. It provides built-in commands (`cat`, `ls`, `echo`, `cp`, `grep`, `wc`) and handles pipes natively without spawning child processes.
-4. **Node Resources (`@fold/node`)**: Implementations of the Resource interface for Node.js (e.g., LocalFS, SQLite, S3, Slack, GitHub, Ollama, Redis, RAM).
-5. **MCP Server (`@fold/mcp`)**: Exposes the Workspace to external clients like Claude or Cursor via the Model Context Protocol.
-6. **Agent Adapters (`@fold/agents`)**: Pre-built tools for LangChain, LangGraph, and Vercel AI SDK.
+1. **Resources (`@tbc-fold/core`)**: The foundational interface. Every backend implements `list`, `read`, `write`, `stat`, and `delete`.
+2. **Workspace (`@tbc-fold/core`)**: The central orchestrator. It mounts resources at path prefixes (e.g., `/data`, `/slack`) and handles path resolution using longest-prefix matching.
+3. **Executor (`@tbc-fold/core`)**: A bash-like command parser and execution engine. It provides built-in commands (`cat`, `ls`, `echo`, `cp`, `grep`, `wc`) and handles pipes natively without spawning child processes.
+4. **Node Resources (`@tbc-fold/node`)**: Implementations of the Resource interface for Node.js (e.g., LocalFS, SQLite, S3, Slack, GitHub, Ollama, Redis, RAM).
+5. **MCP Server (`@tbc-fold/mcp`)**: Exposes the Workspace to external clients like Claude or Cursor via the Model Context Protocol.
+6. **Agent Adapters (`@tbc-fold/agents`)**: Pre-built tools for LangChain, LangGraph, and Vercel AI SDK.
 
 ## Key Features
 

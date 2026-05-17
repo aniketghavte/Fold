@@ -8,7 +8,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js'
-import type { Workspace } from '@fold/core'
+import type { Workspace } from '@tbc-fold/core'
 
 /**
  * Create an MCP Server backed by a Fold Workspace.
@@ -105,8 +105,8 @@ export function createMCPServer(workspace: Workspace): Server {
  *
  * @example
  * ```ts
- * import { Workspace, LocalFSResource } from '@fold/node'
- * import { startMCPServer } from '@fold/mcp'
+ * import { Workspace, LocalFSResource } from '@tbc-fold/node'
+ * import { startMCPServer } from '@tbc-fold/mcp'
  *
  * const ws = new Workspace({
  *   '/notes': new LocalFSResource({ path: '~/Documents' }),

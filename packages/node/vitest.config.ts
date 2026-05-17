@@ -9,7 +9,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@fold/core': path.resolve(__dirname, '../core/src/index.ts'),
+      '@tbc-fold/core': path.resolve(__dirname, '../core/src/index.ts'),
     },
   },
 })

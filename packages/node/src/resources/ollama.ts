@@ -3,7 +3,7 @@
 // Reading a path like /llama3/hello world runs an inference.
 // Unique to Fold — no other tool in this space does this.
 
-import type { Resource, Entry, FileStat, ContextualResource, ContextEntry } from '@fold/core'
+import type { Resource, Entry, FileStat, ContextualResource, ContextEntry } from '@tbc-fold/core'
 
 /**
  * Configuration for OllamaResource.

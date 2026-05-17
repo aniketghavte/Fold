@@ -1,14 +1,14 @@
 // packages/node/src/index.ts
-// Barrel exports for @fold/node
-// Re-exports everything from @fold/core plus Node-specific resources.
+// Barrel exports for @tbc-fold/node
+// Re-exports everything from @tbc-fold/core plus Node-specific resources.
 
 import fs from 'fs/promises'
 import path from 'path'
-import { Workspace, registerDeserializer, type SnapshotData } from '@fold/core'
+import { Workspace, registerDeserializer, type SnapshotData } from '@tbc-fold/core'
 import { RAMResource } from './resources/ram'
 
 // ---- Re-export all of core ----
-export * from '@fold/core'
+export * from '@tbc-fold/core'
 
 // ---- Node.js Resources ----
 export { RAMResource } from './resources/ram'

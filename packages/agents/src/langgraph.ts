@@ -1,14 +1,14 @@
 // packages/agents/src/langgraph.ts
 // LangGraph adapter — wraps Fold Workspace as a @langchain/core tool
 
-import type { Workspace } from '@fold/core'
+import type { Workspace } from '@tbc-fold/core'
 
 /**
  * Create LangGraph-compatible tools from a Fold Workspace.
  *
  * @example
  * ```ts
- * import { foldLangGraphTools } from '@fold/agents'
+ * import { foldLangGraphTools } from '@tbc-fold/agents'
  * const tools = foldLangGraphTools(workspace)
  * ```
  */

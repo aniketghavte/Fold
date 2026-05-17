@@ -2,7 +2,7 @@
 // RedisCacheStore — Redis-backed cache for multi-process / serverless.
 // Requires: npm install ioredis
 
-import type { CacheStore } from '@fold/core'
+import type { CacheStore } from '@tbc-fold/core'
 
 export class RedisCacheStore implements CacheStore {
   private client: import('ioredis').Redis

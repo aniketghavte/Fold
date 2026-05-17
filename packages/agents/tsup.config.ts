@@ -8,5 +8,5 @@ export default defineConfig({
   sourcemap: true,
   splitting: false,
   treeshake: true,
-  external: ['@fold/core', '@langchain/core', 'ai', 'zod'],
+  external: ['@tbc-fold/core', '@langchain/core', 'ai', 'zod'],
 })

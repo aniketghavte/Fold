@@ -6,7 +6,7 @@
 //   2. A model pulled (ollama pull llama3.2)
 //   3. Run: npx tsx examples/ollama-rag/index.ts
 
-import { Workspace, RAMResource, OllamaResource, LocalFSResource } from '@fold/node'
+import { Workspace, RAMResource, OllamaResource, LocalFSResource } from '@tbc-fold/node'
 
 async function main() {
   console.log('=== Fold Ollama RAG Example ===\n')

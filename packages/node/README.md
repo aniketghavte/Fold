@@ -1,11 +1,11 @@
-# @fold/node
+# @tbc-fold/node
 
 Node.js resources for the Fold virtual filesystem. Includes 8 resource backends that map different data sources to filesystem semantics.
 
 ## Installation
 
 ```bash
-npm install @fold/node
+npm install @tbc-fold/node
 
 # Install optional dependencies for the resources you need:
 npm install better-sqlite3        # SQLiteResource
@@ -30,7 +30,7 @@ npm install ioredis               # RedisResource
 ## Quick Examples
 
 ```typescript
-import { Workspace, RAMResource, LocalFSResource, SQLiteResource } from '@fold/node'
+import { Workspace, RAMResource, LocalFSResource, SQLiteResource } from '@tbc-fold/node'
 
 const ws = new Workspace({
   '/scratch': new RAMResource(),
@@ -45,10 +45,10 @@ await ws.execute('cp /db/users/1 /scratch/user.json')  // cross-resource
 
 ## Also Exports
 
-This package re-exports everything from `@fold/core`, so you only need one import:
+This package re-exports everything from `@tbc-fold/core`, so you only need one import:
 
 ```typescript
-import { Workspace, RAMResource, type Resource, type Entry } from '@fold/node'
+import { Workspace, RAMResource, type Resource, type Entry } from '@tbc-fold/node'
 ```
 
 ## License

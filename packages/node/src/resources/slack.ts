@@ -2,8 +2,8 @@
 // SlackResource — channels as directories, messages as JSONL files.
 // Requires: npm install @slack/web-api @slack/socket-mode
 
-import type { Resource, Entry, FileStat, ResourceEvent, ReactiveResource, ContextualResource } from '@fold/core'
-import type { ContextEntry } from '@fold/core'
+import type { Resource, Entry, FileStat, ResourceEvent, ReactiveResource, ContextualResource } from '@tbc-fold/core'
+import type { ContextEntry } from '@tbc-fold/core'
 
 export interface SlackConfig {
   token: string

@@ -4,7 +4,7 @@
   "commit": false,
   "fixed": [],
   "linked": [
-    ["@fold/core", "@fold/node", "@fold/mcp", "@fold/agents"]
+    ["@tbc-fold/core", "@tbc-fold/node", "@tbc-fold/mcp", "@tbc-fold/agents"]
   ],
   "access": "public",
   "baseBranch": "main",
