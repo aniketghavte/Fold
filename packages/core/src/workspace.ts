@@ -5,7 +5,7 @@
 import type { Resource, Entry, ResourceEvent } from './resource'
 import { isReactive, isContextual } from './resource'
 import type { ContextEntry } from './context'
-import { Executor, type CommandHandler } from './executor'
+import { Executor, type CommandHandler, type ExecuteOptions } from './executor'
 import { type CacheStore, RAMCacheStore } from './cache'
 import { ReactiveEngine } from './reactive'
 import { buildSnapshot, getDeserializer } from './snapshot'
@@ -117,8 +117,8 @@ export class Workspace {
    * Execute a bash-like command string.
    * Supports pipes, output redirection, and all built-in commands.
    */
-  async execute(command: string): Promise<ExecuteResult> {
-    return this.executor.run(command.trim())
+  async execute(command: string, options?: ExecuteOptions): Promise<ExecuteResult> {
+    return this.executor.run(command.trim(), options)
   }
 
   // ================================================================
