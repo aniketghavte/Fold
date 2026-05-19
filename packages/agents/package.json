@@ -1,6 +1,6 @@
 {
   "name": "@tbc-fold/agents",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Fold — Agent framework adapters for LangChain, LangGraph, and Vercel AI SDK",
   "main": "dist/index.cjs",
   "module": "dist/index.js",

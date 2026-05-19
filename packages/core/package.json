@@ -1,6 +1,6 @@
 {
   "name": "@tbc-fold/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Fold — Runtime-agnostic core for the unified virtual filesystem",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
