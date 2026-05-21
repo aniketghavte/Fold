@@ -197,4 +197,45 @@ describe('Executor — Built-in Commands', () => {
     expect(r.exitCode).toBe(1)
     expect(r.stderr).toContain('Command not found')
   })
+
+  // ---- readOnly sandbox ----
+  test('readOnly sandbox blocks mutating commands', async () => {
+    const cpRes = await ws.execute('cp /data/a.txt /data/b.txt', { readOnly: true })
+    expect(cpRes.exitCode).toBe(1)
+    expect(cpRes.stderr).toContain('Security Error')
+
+    const mvRes = await ws.execute('mv /data/a.txt /data/b.txt', { readOnly: true })
+    expect(mvRes.exitCode).toBe(1)
+    expect(mvRes.stderr).toContain('Security Error')
+
+    const rmRes = await ws.execute('rm /data/temp.txt', { readOnly: true })
+    expect(rmRes.exitCode).toBe(1)
+    expect(rmRes.stderr).toContain('Security Error')
+
+    const mkdirRes = await ws.execute('mkdir /data/newdir', { readOnly: true })
+    expect(mkdirRes.exitCode).toBe(1)
+    expect(mkdirRes.stderr).toContain('Security Error')
+  })
+
+  test('readOnly sandbox blocks file redirection', async () => {
+    const writeRes = await ws.execute('echo hello > /data/out.txt', { readOnly: true })
+    expect(writeRes.exitCode).toBe(1)
+    expect(writeRes.stderr).toContain('Security Error')
+
+    const appendRes = await ws.execute('echo hello >> /data/out.txt', { readOnly: true })
+    expect(appendRes.exitCode).toBe(1)
+    expect(appendRes.stderr).toContain('Security Error')
+  })
+
+  test('readOnly sandbox allows non-mutating commands', async () => {
+    await ws.writeFile('/data/f.txt', Buffer.from('hello'))
+    const catRes = await ws.execute('cat /data/f.txt', { readOnly: true })
+    expect(catRes.exitCode).toBe(0)
+    expect(catRes.stdout).toBe('hello')
+
+    const lsRes = await ws.execute('ls /data', { readOnly: true })
+    expect(lsRes.exitCode).toBe(0)
+    expect(lsRes.stdout).toContain('f.txt')
+  })
 })
+
