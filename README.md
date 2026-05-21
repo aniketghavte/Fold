@@ -192,7 +192,7 @@ Add to your Claude/Cursor MCP config:
 ```json
 {
   "mcpServers": {
-    "fold": {
+    "tbc-fold": {
       "command": "npx",
       "args": ["tsx", "mcp-server.ts"]
     }

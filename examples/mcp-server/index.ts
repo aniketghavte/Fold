@@ -22,7 +22,7 @@ async function main() {
   console.error('Add this to your MCP client config:')
   console.error(JSON.stringify({
     mcpServers: {
-      fold: {
+      'tbc-fold': {
         command: 'npx',
         args: ['tsx', 'examples/mcp-server/index.ts'],
       },

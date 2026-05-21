@@ -31,7 +31,7 @@ Add to your Claude Desktop or Cursor config:
 ```json
 {
   "mcpServers": {
-    "fold": {
+    "tbc-fold": {
       "command": "npx",
       "args": ["tsx", "mcp-server.ts"]
     }
