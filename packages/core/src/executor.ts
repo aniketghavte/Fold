@@ -31,6 +31,14 @@ interface Pipeline {
 export type CommandHandler = (args: string[], ctx: CommandContext) => Promise<Buffer | string>
 
 /**
+ * Options for command execution
+ */
+export interface ExecuteOptions {
+  /** If true, blocks commands that mutate state (cp, mv, rm, mkdir, > redirects) */
+  readOnly?: boolean
+}
+
+/**
  * The Executor parses bash-like command strings and runs them in-process.
  * No child processes, no /bin/bash, no exec(). Everything is a TypeScript function.
  */
@@ -78,9 +86,22 @@ export class Executor {
   /**
    * Parse and execute a full command string (with pipes, redirects).
    */
-  async run(commandString: string): Promise<ExecuteResult> {
+  async run(commandString: string, options?: ExecuteOptions): Promise<ExecuteResult> {
     try {
       const pipeline = this.parse(commandString)
+
+      if (options?.readOnly) {
+        if (pipeline.outputPath || pipeline.appendPath) {
+          throw new Error('Security Error: File redirection is blocked in read-only sandbox mode.')
+        }
+        const mutatingCommands = new Set(['cp', 'mv', 'rm', 'mkdir'])
+        for (const stage of pipeline.stages) {
+          if (mutatingCommands.has(stage.name)) {
+            throw new Error(`Security Error: Command '${stage.name}' is blocked in read-only sandbox mode.`)
+          }
+        }
+      }
+
       const stdout = await this.executePipeline(pipeline)
       return { stdout: stdout.toString(), stderr: '', exitCode: 0 }
     } catch (err) {

@@ -1,6 +1,6 @@
 {
   "name": "@tbc-fold/mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Fold — MCP server that exposes any Workspace to Claude, Cursor, and other MCP clients",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
